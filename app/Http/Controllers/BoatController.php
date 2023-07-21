@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Boat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use PDF;
 class BoatController extends Controller
 {
    public function store(Request $request)
@@ -62,5 +62,14 @@ class BoatController extends Controller
          'boats'=> $boats,
          'id'=> $id
       ]);
+   }
+
+   public function printboat(Request $request, $id)
+   {
+      $boats = DB::select('select * from boats where id = ?', [$id]);
+      $id = $id;
+      view()->share('boats',$boats);
+      $pdf = PDF::loadView('printboat');
+      return $pdf->stream();
    }
 }

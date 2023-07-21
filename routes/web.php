@@ -24,11 +24,14 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    // Add Boat
     Route::post('/dashboard/add-boat',[BoatController::class,'store'])->name('dashboard.add.boat');
-    Route::get('/dashboard/edit-boat',[BoatController::class,'editboat'])->name('dashboard.edit.boat');
+    // Update Boat Details
     Route::post('/dashboard/update-boat',[BoatController::class,'updateboat'])->name('dashboard.update.boat');
     // View Boat Details
     Route::get('/dashboard/view/{id}',[BoatController::class,'viewboat'])->where('id', '[0-9]+')->name('dashboard.view');
+    // Print Boat Details
+    Route::get('/dashboard/print/{id}',[BoatController::class,'printboat'])->where('id', '[0-9]+')->name('dashboard.print');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
