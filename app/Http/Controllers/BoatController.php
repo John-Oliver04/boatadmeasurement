@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Boat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use PDF;
 class BoatController extends Controller
 {
    public function store(Request $request)
@@ -34,20 +34,42 @@ class BoatController extends Controller
    }
    public function updateboat(Request $request)
    {
-      DB::update('update boats set dateofad='. $request->input('dateofad').
-      ', nameofboat='. $request->input('nameofboat').
-      ', registeredlength='. $request->input('registeredlength').
-      ', tonnagelength='. $request->input('tonnagelength').
-      ', tonnagedepth='. $request->input('tonnagedepth').
-      ', enginemake='. $request->input('enginemake').
-      ', enginehorsepower='. $request->input('enginehorsepower').
-      ', enginenoofcylinder='. $request->input('enginenoofcylinder').
-      ', nameofbuilder='. $request->input('nameofbuilder').
-      ', yearofbuild='. $request->input('yearofbuild').
-      ', placeofbuild='. $request->input('placeofbuild').
-      '' .' where id ='.$request->input('id'));
+      DB::update("update boats set dateofad='". $request->input('dateofad').
+      "' , nameofboat='". $request->input('nameofboat').
+      "', registeredlength='". $request->input('registeredlength').
+      "', tonnagelength='". $request->input('tonnagelength').
+      "', tonnagedepth='". $request->input('tonnagedepth').
+      "', enginemake='". $request->input('enginemake').
+      "', enginehorsepower='". $request->input('enginehorsepower').
+      "', enginenoofcylinder='". $request->input('enginenoofcylinder').
+      "', nameofbuilder='". $request->input('nameofbuilder').
+      "', yearofbuild='". $request->input('yearofbuild').
+      "', placeofbuild='". $request->input('placeofbuild').
+      "' where id ='".$request->input('id')."'");
 
       
-      return redirect('/dashboard')->with('message', 'Upadated Success!');
+      return redirect('/dashboard')->with('message', 'Updated Success!');
+   }
+
+   public function viewboat(Request $request, $id)
+   {  
+      
+      $boats = DB::select('select * from boats where id = ?', [$id]);
+      $id = $id;
+      // dd($boats);
+      return view('EditBoat',
+      [
+         'boats'=> $boats,
+         'id'=> $id
+      ]);
+   }
+
+   public function printboat(Request $request, $id)
+   {
+      $boats = DB::select('select * from boats where id = ?', [$id]);
+      $id = $id;
+      view()->share('boats',$boats);
+      $pdf = PDF::loadView('printboat');
+      return $pdf->stream();
    }
 }
