@@ -34,20 +34,33 @@ class BoatController extends Controller
    }
    public function updateboat(Request $request)
    {
-      DB::update('update boats set dateofad='. $request->input('dateofad').
-      ', nameofboat='. $request->input('nameofboat').
-      ', registeredlength='. $request->input('registeredlength').
-      ', tonnagelength='. $request->input('tonnagelength').
-      ', tonnagedepth='. $request->input('tonnagedepth').
-      ', enginemake='. $request->input('enginemake').
-      ', enginehorsepower='. $request->input('enginehorsepower').
-      ', enginenoofcylinder='. $request->input('enginenoofcylinder').
-      ', nameofbuilder='. $request->input('nameofbuilder').
-      ', yearofbuild='. $request->input('yearofbuild').
-      ', placeofbuild='. $request->input('placeofbuild').
-      '' .' where id ='.$request->input('id'));
+      DB::update("update boats set dateofad='". $request->input('dateofad').
+      "' , nameofboat='". $request->input('nameofboat').
+      "', registeredlength='". $request->input('registeredlength').
+      "', tonnagelength='". $request->input('tonnagelength').
+      "', tonnagedepth='". $request->input('tonnagedepth').
+      "', enginemake='". $request->input('enginemake').
+      "', enginehorsepower='". $request->input('enginehorsepower').
+      "', enginenoofcylinder='". $request->input('enginenoofcylinder').
+      "', nameofbuilder='". $request->input('nameofbuilder').
+      "', yearofbuild='". $request->input('yearofbuild').
+      "', placeofbuild='". $request->input('placeofbuild').
+      "' where id ='".$request->input('id')."'");
 
       
-      return redirect('/dashboard')->with('message', 'Upadated Success!');
+      return redirect('/dashboard')->with('message', 'Updated Success!');
+   }
+
+   public function viewboat(Request $request, $id)
+   {  
+      
+      $boats = DB::select('select * from boats where id = ?', [$id]);
+      $id = $id;
+      // dd($boats);
+      return view('EditBoat',
+      [
+         'boats'=> $boats,
+         'id'=> $id
+      ]);
    }
 }

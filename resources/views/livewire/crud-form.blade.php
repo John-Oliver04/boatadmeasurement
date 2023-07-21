@@ -23,7 +23,7 @@
                         <div class="modal-content">
                             <div class="modal-header bg-success">
                             <h1 class="text-white modal-title fs-5" id="exampleModalLabel">Add Form</h1>
-                            <button type="button" class="text-white btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close">X</button>
+                            <button type="button" class="text-white bg-red-500 px-2 border hover:bg-red-600" data-bs-dismiss="modal" aria-label="Close">X</button>
                             </div>
                             <form action="{{url('/dashboard/add-boat')}}" class="w-100" method="post" enctype="multipart/form-data">
                                 @csrf
@@ -84,8 +84,8 @@
                                     
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary bg-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary bg-primary">Save</button>
+                                    <button type="button" class="text-white bg-slate-500 px-3 p-1 border hover:bg-slate-600" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="text-white bg-blue-500 px-3 p-1 border hover:bg-blue-600">Save</button>
                                 </div>
                             </form>
                         </div>
@@ -98,6 +98,9 @@
                 {{-- unordered list --}}
                 <ul>
                     {{-- loop data through loop --}}
+                    @php
+                        $boatcount = 1;
+                    @endphp
                     @foreach ($boats as $boat)    
                         {{-- list --}}
                         <li class="w-full border-b-2 border-blue-500">
@@ -107,7 +110,10 @@
                                     <div class="p-3">
 
                                         {{-- header --}}
-                                        <h1 class="ml-2 text-2xl font-bold tracking-widest ">{{$boat->nameofboat}}</h1>
+                                        <div class="flex">
+                                            <b>{{$boatcount++ }}</b>
+                                            <h1 class="ml-2 text-2xl font-bold tracking-widest ">{{$boat->nameofboat}}</h1>
+                                        </div>
                                         {{-- body --}}
                                         <div class="flex">
                                             <div>
@@ -140,9 +146,31 @@
                                     </div>
                                     {{-- footer --}}
                                     <div class="flex flex-col p-3 text-white border-l-2 border-blue-100">
-                                        <button class="w-24 p-2 bg-blue-500 hover:bg-blue-600 ">View</button>
-                                        <button class="w-24 p-2 bg-orange-500 hover:bg-orange-600 ">Edit</button>
-                                        <button class="w-24 p-2 bg-red-500 hover:bg-red-600 ">Delete</button>
+                                        <a href="dashboard/view/{{$boat->id}}" class="text-center w-24 p-2 bg-blue-500 hover:bg-blue-600 ">View</a>
+                                        <!-- Button trigger modal -->
+                                        <button class="w-24 p-2 bg-red-500 hover:bg-red-600"  data-bs-toggle="modal" data-bs-target="#deleteboat{{$boat->id}}">Delete</button>
+                                        <!-- Modal -->
+                                        <div class="modal fade text-slate-900" id="deleteboat{{$boat->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Delete Message</h5>
+                                                <button type="button" class="text-white bg-red-500 px-2 border hover:bg-red-600" data-bs-dismiss="modal" aria-label="Close">x</button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h1 class="text-lg">{{$boat->nameofboat}}</h1>
+                                                    Are you sure to remove this boat from the list?
+                                                </div>
+                                                <div class="modal-footer">
+                                                <button type="button" class="text-white bg-slate-500 px-3 p-1 border hover:bg-slate-600" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" class="text-white bg-red-500 px-3 p-1 border hover:bg-red-600">Remove</button>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        
+                                        <button class="w-24 p-2 bg-indigo-500 hover:bg-indigo-600 ">Print</button>
                                     </div>
                                 </div>
                             </div>

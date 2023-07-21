@@ -27,6 +27,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/add-boat',[BoatController::class,'store'])->name('dashboard.add.boat');
     Route::get('/dashboard/edit-boat',[BoatController::class,'editboat'])->name('dashboard.edit.boat');
     Route::post('/dashboard/update-boat',[BoatController::class,'updateboat'])->name('dashboard.update.boat');
+    // View Boat Details
+    Route::get('/dashboard/view/{id}',[BoatController::class,'viewboat'])->where('id', '[0-9]+')->name('dashboard.view');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
